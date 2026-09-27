@@ -41,10 +41,34 @@ public class ExchangeRatesSteps {
 
     public ExchangeRatesSteps openFromQuickActions(HomePage from) {
         from.quickActions().openExchangeRates();
+        return verifyPageOpened();
+    }
+
+    private ExchangeRatesSteps verifyPageOpened() {
         assertThat(page).hasURL(Pattern.compile(".*" + RegexUtils.escape(ratesPage.localizedPath()) + ".*"));
         assertThat(ratesPage.rateTypeTabs().activeTab()).hasText(LocalizedText.get(locale, "rates.tab.commercial"));
         assertThat(ratesPage.ratesTable()).isVisible();
         return this;
+    }
+
+    // ---------- Localization (SCRUM-T32) ----------
+
+    public ExchangeRatesSteps verifyContentLocalized() {
+        new HeaderSteps(ratesPage.header(), locale).verifyLocalized();
+        assertThat(ratesPage.heading()).hasText(LocalizedText.get(locale, "rates.heading"));
+        assertThat(ratesPage.breadcrumbs().current()).hasText(LocalizedText.get(locale, "rates.breadcrumb"));
+        assertThat(ratesPage.rateTypeTabs().activeTab()).hasText(LocalizedText.get(locale, "rates.tab.commercial"));
+        assertThat(ratesPage.currencyName("USD")).containsText(LocalizedText.get(locale, "rates.currency.usd"));
+        return this;
+    }
+
+    /**
+     * Toggles the header language switcher. The site re-renders the same page in the target language,
+     * so the returned steps are bound to {@code target} and verify that the user stayed on this page.
+     */
+    public ExchangeRatesSteps switchLanguageTo(AppLocale target) {
+        ratesPage.header().languageSwitcher().toggle();
+        return new ExchangeRatesSteps(page, target).verifyPageOpened();
     }
 
     public ExchangeRatesSteps verifyCurrencyListed(String currencyCode) {
@@ -69,6 +93,9 @@ public class ExchangeRatesSteps {
         return this;
     }
 
+    /**
+     * Also proves the dates are localized: they are parsed with this locale's month names.
+     */
     public ExchangeRatesSteps verifyHistoryIsValid(String currencyCode) {
         List<Map<String, String>> entries = ratesPage.historyDialog().entries();
         assertTrue(entries.size() >= MIN_HISTORY_ENTRIES,

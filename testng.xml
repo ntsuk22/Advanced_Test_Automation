@@ -12,4 +12,10 @@
             <class name="tests.SiteSearchTest"/>
         </classes>
     </test>
+
+    <test name="Localization">
+        <classes>
+            <class name="tests.LocalizationTest"/>
+        </classes>
+    </test>
 </suite>

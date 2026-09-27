@@ -11,9 +11,11 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class HomeSteps {
 
+    private final AppLocale locale;
     private final HomePage homePage;
 
     public HomeSteps(Page page, AppLocale locale) {
+        this.locale = locale;
         this.homePage = new HomePage(page, locale);
     }
 
@@ -27,6 +29,11 @@ public class HomeSteps {
     public HomeSteps acceptCookies() {
         homePage.cookieBanner().acceptAll();
         assertThat(homePage.cookieBanner().root()).isHidden();
+        return this;
+    }
+
+    public HomeSteps verifyHeaderLocalized() {
+        new HeaderSteps(homePage.header(), locale).verifyLocalized();
         return this;
     }
 

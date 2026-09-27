@@ -44,6 +44,10 @@ public class ExchangeRatesPage extends BasePage {
         return historyDialog;
     }
 
+    public Locator heading() {
+        return page.locator("h1").first();
+    }
+
     public Locator ratesTable() {
         return page.locator(".tbcx-pw-exchange-rates__table");
     }
@@ -60,6 +64,10 @@ public class ExchangeRatesPage extends BasePage {
 
     public Locator sellRate(String currencyCode) {
         return rateRow(currencyCode).locator("[col-id='sellRate']");
+    }
+
+    public Locator currencyName(String currencyCode) {
+        return rateRow(currencyCode).locator("[col-id='currencyName']");
     }
 
     public Locator officialRate(String currencyCode) {
