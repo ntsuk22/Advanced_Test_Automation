@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!-- db.* values are passed in from config.properties by database.MyBatisSessionFactory -->
     <environments default="testdata">
         <environment id="testdata">
             <transactionManager type="JDBC"/>

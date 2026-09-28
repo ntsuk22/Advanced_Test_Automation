@@ -27,7 +27,6 @@ public class ExchangeRatesApiSteps {
 
     private static final Pattern ISO_CODE = Pattern.compile("^[A-Z]{3}$");
     private static final String VALIDATION_TITLE = "One or more validation errors occurred.";
-    /** Tolerated difference between the API server clock and this machine. */
     private static final long CLOCK_SKEW_MINUTES = 5;
 
     private final ExchangeRatesClient client = new ExchangeRatesClient();
@@ -35,8 +34,6 @@ public class ExchangeRatesApiSteps {
     private CommercialRatesResponse rates;
     private ValidationErrorResponse validationError;
     private Response lastResponse;
-
-    // ---------- Happy path (SCRUM-T34) ----------
 
     public ExchangeRatesApiSteps requestCommercialRates(AppLocale locale) {
         rates = fetchCommercialRates(locale);
@@ -72,7 +69,6 @@ public class ExchangeRatesApiSteps {
         return this;
     }
 
-    /** Checks name (in the requested locale), unit weight and that the official rate lies inside the buy/sell spread. */
     public ExchangeRatesApiSteps verifyMajorCurrency(String iso, AppLocale locale) {
         CurrencyRate rate = rate(rates, iso);
         assertEquals(rate.getName(), LocalizedText.get(locale, "currency.name." + iso), iso + " name for " + locale);
@@ -97,9 +93,6 @@ public class ExchangeRatesApiSteps {
         return this;
     }
 
-    /**
-     * Requests the same list in another locale: currencies and rates must be identical, only names are translated.
-     */
     public ExchangeRatesApiSteps verifySameRatesTranslatedTo(AppLocale otherLocale, String... isos) {
         CommercialRatesResponse other = fetchCommercialRates(otherLocale);
         assertEquals(isoCodes(other), isoCodes(rates), "Currency list differs between locales");
@@ -117,13 +110,10 @@ public class ExchangeRatesApiSteps {
         return this;
     }
 
-    // ---------- Negative (SCRUM-T35) ----------
-
     public ExchangeRatesApiSteps requestExchangeRateExpectingValidationError(String fromIso, String toIso) {
         lastResponse = client.getExchangeRate(fromIso, toIso);
         assertEquals(lastResponse.statusCode(), 400,
                 "Invalid Iso1=" + fromIso + "&Iso2=" + toIso + " should be rejected. Body: " + lastResponse.asString());
-        // ASP.NET returns application/problem+json, which is JSON but not "application/json"
         assertTrue(lastResponse.contentType().contains("json"), "Unexpected content type " + lastResponse.contentType());
 
         validationError = lastResponse.as(ValidationErrorResponse.class, ObjectMapperType.JACKSON_2);
@@ -134,7 +124,6 @@ public class ExchangeRatesApiSteps {
         return this;
     }
 
-    /** {@code field} is the query parameter name, or "" for errors about the request as a whole. */
     public ExchangeRatesApiSteps verifyValidationError(String field, String expectedMessage) {
         List<String> messages = validationError.getErrors().get(field);
         assertNotNull(messages, "No validation errors for '" + field + "'. Errors: " + validationError.getErrors());
@@ -156,13 +145,10 @@ public class ExchangeRatesApiSteps {
         return this;
     }
 
-    /** Response of the last {@link #requestCommercialRates} call, used as the source of truth by UI checks. */
     public CommercialRatesResponse commercialRates() {
         assertNotNull(rates, "Commercial rates were not requested yet");
         return rates;
     }
-
-    // ---------- helpers ----------
 
     private static CurrencyRate rate(CommercialRatesResponse response, String iso) {
         return response.rate(iso).orElseThrow(() -> new AssertionError(iso + " is missing from the rates list"));

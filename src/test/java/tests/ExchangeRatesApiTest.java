@@ -4,9 +4,6 @@ import constants.AppLocale;
 import org.testng.annotations.Test;
 import steps.ExchangeRatesApiSteps;
 
-/**
- * Pure API tests (Rest Assured) - no browser is started, so this class does not extend BaseTest.
- */
 public class ExchangeRatesApiTest {
 
     @Test(description = "SCRUM-T34 | API - get commercial exchange rates (happy path)")

@@ -3,9 +3,6 @@ package components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
-/**
- * Global search overlay opened from the header search button.
- */
 public class SearchOverlayComponent extends BaseComponent {
 
     public SearchOverlayComponent(Page page) {
@@ -24,14 +21,14 @@ public class SearchOverlayComponent extends BaseComponent {
         return root.locator(".search-result-item__title");
     }
 
-    /**
-     * A result is identified by its title and target path, because the same title can
-     * exist for different segments (e.g. personal and business "ვადიანი ანაბარი").
-     */
     public Locator result(String title, String targetPath) {
         return results()
                 .filter(new Locator.FilterOptions().setHas(page.locator("a[href='" + targetPath + "']")))
                 .filter(new Locator.FilterOptions().setHasText(title));
+    }
+
+    public Locator resultTitle(String title, String targetPath) {
+        return result(title, targetPath).locator(".search-result-item__title");
     }
 
     public void search(String keyword) {

@@ -5,10 +5,6 @@ import com.microsoft.playwright.Page;
 
 import java.util.regex.Pattern;
 
-/**
- * Currency converter on the exchange-rates page: amount + currency on each side, a swap button
- * and the "1 USD = 2.555 GEL" description.
- */
 public class CurrencyConverterComponent extends BaseComponent {
 
     private static final String AMOUNT_INPUT = "input.amount-field__input";
@@ -37,7 +33,6 @@ public class CurrencyConverterComponent extends BaseComponent {
         return root.locator(".exchange-rates-calculator__description");
     }
 
-    /** Opens the source-currency dropdown and picks {@code currencyCode}; the option list renders in an overlay. */
     public void selectFromCurrency(String currencyCode) {
         root.locator(".currency-dropdown__trigger").nth(0).click();
         page.locator(".currency-dropdown__panel .currency-dropdown__item")
@@ -54,10 +49,6 @@ public class CurrencyConverterComponent extends BaseComponent {
         root.locator("button.currency-calculator__swap__button").click();
     }
 
-    /**
-     * Converted amount is calculated client-side; wait until the target field holds a value
-     * within {@code tolerance} of {@code expected} instead of sleeping.
-     */
     public void waitForConvertedAmount(double expected, double tolerance) {
         page.waitForFunction(
                 "([el, exp, tol]) => { const v = parseFloat((el.value || '').replace(/,/g, '')); return !isNaN(v) && Math.abs(v - exp) <= tol; }",

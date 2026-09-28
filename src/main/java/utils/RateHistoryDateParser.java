@@ -10,11 +10,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Parses rate-history dates like "25 სექტემბერი, 11:54" / "25 September, 11:54".
- * The site omits the year, so entries are resolved against the current year and
- * a month later than today is treated as belonging to the previous year.
- */
 public final class RateHistoryDateParser {
 
     private static final Pattern FORMAT = Pattern.compile("^(\\d{1,2})\\s+(\\S+?),?\\s+(\\d{1,2}):(\\d{2})$");

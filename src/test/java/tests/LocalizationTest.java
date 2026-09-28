@@ -8,10 +8,6 @@ import steps.HomeSteps;
 
 public class LocalizationTest extends BaseTest {
 
-    /**
-     * {start locale, locale switched to}. Expected texts come from resources/testdata/locales/{ka|en}.properties,
-     * so adding a locale means adding a row here plus its properties file.
-     */
     @DataProvider(name = "localeSwitches")
     public Object[][] localeSwitches() {
         return new Object[][]{

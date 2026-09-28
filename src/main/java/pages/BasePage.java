@@ -1,5 +1,6 @@
 package pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import components.BreadcrumbsComponent;
 import components.CookieBannerComponent;
@@ -8,9 +9,6 @@ import components.QuickActionsComponent;
 import constants.AppLocale;
 import utils.ConfigReader;
 
-/**
- * Common part of every tbcbank.ge page: the shared components and locale-aware URL building.
- */
 public abstract class BasePage {
 
     private static final String BLOCKED_PAGE_TEXT = "Your request has been blocked";
@@ -32,7 +30,6 @@ public abstract class BasePage {
         this.breadcrumbs = new BreadcrumbsComponent(page);
     }
 
-    /** Path of the page without the locale prefix, see {@link constants.PagePaths}. */
     protected abstract String path();
 
     public String localizedPath() {
@@ -47,15 +44,15 @@ public abstract class BasePage {
         page.navigate(url());
     }
 
-    /**
-     * tbcbank.ge's firewall answers too many rapid requests with a plain "Your request has been blocked" page.
-     * Fail with that reason instead of a misleading "element not found" further on.
-     */
     public void failIfBlockedBySite() {
         if (page.getByText(BLOCKED_PAGE_TEXT).count() > 0) {
             throw new IllegalStateException("tbcbank.ge blocked the request (WAF '" + BLOCKED_PAGE_TEXT
                     + "', error code 101). This is rate limiting, not a test failure - wait a few minutes and re-run.");
         }
+    }
+
+    public Locator heading() {
+        return page.locator("h1").first();
     }
 
     public HeaderComponent header() {

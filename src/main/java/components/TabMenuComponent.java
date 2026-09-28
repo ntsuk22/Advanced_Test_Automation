@@ -3,14 +3,14 @@ package components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
-/**
- * Horizontal tab menu (tbcx-pw-tab-menu) used by several pages,
- * e.g. ATMs / Branches / CDMs on the locations page and rate types on the exchange-rates page.
- */
 public class TabMenuComponent extends BaseComponent {
 
     public TabMenuComponent(Page page, Locator root) {
         super(page, root);
+    }
+
+    public static TabMenuComponent firstOn(Page page) {
+        return new TabMenuComponent(page, page.locator("tbcx-pw-tab-menu").first());
     }
 
     public Locator tab(String label) {

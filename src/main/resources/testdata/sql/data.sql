@@ -1,4 +1,3 @@
--- One row = one execution of CurrencyConverterDataDrivenTest. Add a row to add a variation; set active = FALSE to skip one.
 MERGE INTO currency_conversion (currency_code, currency_name, amount, active)
     KEY (currency_code, amount)
     VALUES ('USD', '1 აშშ დოლარი', 250.00, TRUE),

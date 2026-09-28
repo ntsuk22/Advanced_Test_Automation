@@ -14,7 +14,6 @@ public class ApiToUiConsistencyTest extends BaseTest {
 
     @Test(description = "SCRUM-T36 | API -> UI - exchange-rates table matches the commercial rates API")
     public void exchangeRatesTableMatchesApi() {
-        // Source of truth: Rest Assured call deserialized into POJOs
         CommercialRatesResponse api = new ExchangeRatesApiSteps()
                 .requestCommercialRates(LOCALE)
                 .verifyEveryRateIsValid()

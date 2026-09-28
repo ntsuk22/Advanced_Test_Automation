@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 
-/**
- * One element of {@code rates} in GET /exchangeRates/commercialList.
- * Rates are BigDecimal so values such as 2.5530 are compared exactly.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrencyRate {
 
@@ -16,7 +12,6 @@ public class CurrencyRate {
     private BigDecimal buyRate;
     private BigDecimal sellRate;
     private BigDecimal officialCourse;
-    /** Units the rate is quoted for: 1 for USD, 10 for CNY, 100 for JPY. */
     private BigDecimal weight;
     private BigDecimal diff;
 

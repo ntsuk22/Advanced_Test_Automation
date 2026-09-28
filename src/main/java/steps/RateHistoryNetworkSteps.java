@@ -10,6 +10,7 @@ import com.microsoft.playwright.Response;
 import components.RateHistoryDialogComponent;
 import constants.AppLocale;
 import pages.ExchangeRatesPage;
+import utils.ConfigReader;
 import utils.LocalizedText;
 import utils.RateHistoryDateParser;
 
@@ -29,10 +30,6 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-/**
- * Captures the rate-history request the browser sends when a currency row is clicked,
- * validates it at network level and then checks the dialog against the captured response.
- */
 public class RateHistoryNetworkSteps {
 
     private static final String HISTORY_ENDPOINT = "/api/v1/commercialRates/list";
@@ -52,7 +49,6 @@ public class RateHistoryNetworkSteps {
         this.ratesPage = new ExchangeRatesPage(page, locale);
     }
 
-    /** Clicks the row and synchronises on the history response itself - no arbitrary waiting. */
     public RateHistoryNetworkSteps openHistoryAndCaptureTraffic(String currencyCode) {
         assertThat(ratesPage.rateRow(currencyCode)).isVisible();
         response = page.waitForResponse(
@@ -63,7 +59,8 @@ public class RateHistoryNetworkSteps {
 
     public RateHistoryNetworkSteps verifyRequest(String fromCurrency, String toCurrency) {
         Request request = response.request();
-        assertEquals(URI.create(request.url()).getHost(), "apigw.tbcbank.ge", "History request host");
+        assertEquals(URI.create(request.url()).getHost(), URI.create(ConfigReader.get("api.base.url")).getHost(),
+                "History request host");
         assertEquals(URI.create(request.url()).getPath(), HISTORY_ENDPOINT, "History request endpoint");
         assertEquals(request.method(), "POST", "History request method");
         String contentType = request.headerValue("content-type");
@@ -76,7 +73,6 @@ public class RateHistoryNetworkSteps {
         LocalDate endDate = LocalDate.parse(query.path("endDate").asText());
         LocalDate startDate = LocalDate.parse(query.path("startDate").asText());
         LocalDate today = LocalDate.now();
-        // The browser uses this machine's clock; accept yesterday too in case the click happened around midnight
         assertTrue(!endDate.isAfter(today) && !endDate.isBefore(today.minusDays(1)), "endDate should be today, was " + endDate);
         assertEquals(ChronoUnit.DAYS.between(startDate, endDate), HISTORY_PERIOD_DAYS, "Requested period " + startDate + ".." + endDate);
         return this;
@@ -114,7 +110,6 @@ public class RateHistoryNetworkSteps {
         assertThat(dialog.root()).isVisible();
         assertThat(dialog.currencyBadge()).hasText(currencyCode);
         assertThat(dialog.title()).hasText(LocalizedText.get(locale, "rates.history.title"));
-        // One UI row per response entry; retries until the grid has rendered the response
         assertThat(dialog.rows()).hasCount(entries.size());
         assertThat(dialog.unfilledRows()).hasCount(0);
 

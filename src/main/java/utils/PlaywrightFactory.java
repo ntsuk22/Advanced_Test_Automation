@@ -10,10 +10,6 @@ import com.microsoft.playwright.options.Geolocation;
 
 import java.util.List;
 
-/**
- * Owns one isolated Playwright -> Browser -> Context -> Page chain per test thread.
- * Playwright objects are not thread-safe, so every parallel test gets its own chain.
- */
 public final class PlaywrightFactory {
 
     private static final ThreadLocal<Playwright> PLAYWRIGHT = new ThreadLocal<>();

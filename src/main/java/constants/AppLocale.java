@@ -1,8 +1,5 @@
 package constants;
 
-/**
- * Site languages. {@code path} is the URL prefix used by tbcbank.ge, {@code apiLocale} the locale sent to its API.
- */
 public enum AppLocale {
     KA("ka", "ka-GE"),
     EN("en", "en-US");

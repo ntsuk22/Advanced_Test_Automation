@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Exchange-rates page: rate-type tabs, commercial rates table, currency converter and rate-history dialog.
- */
 public class ExchangeRatesPage extends BasePage {
 
     private final TabMenuComponent rateTypeTabs;
@@ -24,8 +21,7 @@ public class ExchangeRatesPage extends BasePage {
 
     public ExchangeRatesPage(Page page, AppLocale locale) {
         super(page, locale);
-        // The first tab menu on the page switches the rates table (commercial / wholesale / ...)
-        this.rateTypeTabs = new TabMenuComponent(page, page.locator("tbcx-pw-tab-menu").first());
+        this.rateTypeTabs = TabMenuComponent.firstOn(page);
         this.converter = new CurrencyConverterComponent(page);
         this.historyDialog = new RateHistoryDialogComponent(page);
     }
@@ -45,10 +41,6 @@ public class ExchangeRatesPage extends BasePage {
 
     public RateHistoryDialogComponent historyDialog() {
         return historyDialog;
-    }
-
-    public Locator heading() {
-        return page.locator("h1").first();
     }
 
     public Locator ratesTable() {
@@ -85,15 +77,10 @@ public class ExchangeRatesPage extends BasePage {
         return ratesTable().locator(".ag-row");
     }
 
-    /** The table initially lists the most popular currencies; this button reveals the rest. */
     public Locator showAllCurrenciesButton(String label) {
         return page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(label));
     }
 
-    /**
-     * Reads every rendered row as {currencyName, buyRate, sellRate, officialRate} with whitespace normalised,
-     * e.g. currencyName "CNY 10 ჩინური იუანი", officialRate "chevron-up-outlined 3.8848" (trend icon + value).
-     */
     @SuppressWarnings("unchecked")
     public List<Map<String, String>> readRateRows() {
         return (List<Map<String, String>>) rateRows().evaluateAll(

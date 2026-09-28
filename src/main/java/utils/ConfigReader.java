@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Reads config.properties; a JVM system property with the same key (-Dkey=value) always wins.
- */
 public final class ConfigReader {
 
     private static final Properties PROPERTIES = load();

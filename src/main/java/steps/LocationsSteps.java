@@ -29,7 +29,6 @@ public class LocationsSteps {
         this.locationsPage = new LocationsPage(page, locale);
     }
 
-    /** Opens the locations page from the sticky quick-action button and waits for the list to load. */
     public LocationsSteps openFromQuickActions(HomePage from) {
         Response response = page.waitForResponse(LocationsPage::isLocationListResponse,
                 () -> from.quickActions().openLocations());
@@ -59,8 +58,6 @@ public class LocationsSteps {
 
         assertThat(locationsPage.typeTabs().activeTab()).hasCount(1);
         assertThat(locationsPage.typeTabs().activeTab()).hasText(tabLabel);
-        // ATMs have their own icon; branches and CDMs share one, so for those we assert that no ATM is left.
-        // verifyTypeCountsAddUpToAll() then proves branches and CDMs are disjoint subsets of "All".
         if (type == LocationType.ATM) {
             assertThat(locationsPage.itemsWithoutIcon(LocationType.ATM.icon())).hasCount(0);
         } else {
@@ -78,10 +75,6 @@ public class LocationsSteps {
         return this;
     }
 
-    /**
-     * Synchronises on the list request: waits until the UI renders exactly as many locations
-     * as the response returned, so assertions never run against the previous list.
-     */
     private int waitForRenderedList(Response response) {
         assertTrue(response.ok(), "Location list request failed with HTTP " + response.status());
         int expected = JsonParser.parseString(response.text()).getAsJsonArray().size();

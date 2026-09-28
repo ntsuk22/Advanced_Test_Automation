@@ -13,7 +13,6 @@ public final class CurrencyConversionDataProvider {
     private CurrencyConversionDataProvider() {
     }
 
-    /** Database -> MyBatis -> CurrencyConversion -> one test invocation per active row. */
     @DataProvider(name = ACTIVE_CONVERSIONS)
     public static Object[][] activeConversions() {
         List<CurrencyConversion> rows = CurrencyConversionRepository.findActive();

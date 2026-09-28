@@ -41,7 +41,7 @@ public class SearchSteps {
 
     public SearchSteps verifyResultShown(String title, String targetPath) {
         assertThat(searchOverlay.result(title, targetPath)).hasCount(1);
-        assertThat(searchOverlay.result(title, targetPath).locator(".search-result-item__title")).hasText(title);
+        assertThat(searchOverlay.resultTitle(title, targetPath)).hasText(title);
         return this;
     }
 

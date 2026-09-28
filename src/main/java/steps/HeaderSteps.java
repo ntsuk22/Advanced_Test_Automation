@@ -6,9 +6,6 @@ import utils.LocalizedText;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-/**
- * Header checks shared by every page, since the header component is part of every page.
- */
 public class HeaderSteps {
 
     private final HeaderComponent header;

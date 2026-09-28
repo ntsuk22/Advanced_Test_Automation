@@ -5,12 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 import java.util.Map;
 
-/**
- * RFC 9110 "problem details" body returned with HTTP 400, e.g.
- * {"title": "One or more validation errors occurred.", "status": 400,
- *  "errors": {"Iso2": ["Iso2 must be 3 characters long."]}, "traceId": "00-..."}.
- * Errors not tied to one parameter are listed under the empty key "".
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ValidationErrorResponse {
 

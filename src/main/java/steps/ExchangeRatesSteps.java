@@ -51,8 +51,6 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    // ---------- Localization (SCRUM-T32) ----------
-
     public ExchangeRatesSteps verifyContentLocalized() {
         new HeaderSteps(ratesPage.header(), locale).verifyLocalized();
         assertThat(ratesPage.heading()).hasText(LocalizedText.get(locale, "rates.heading"));
@@ -62,10 +60,6 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    /**
-     * Toggles the header language switcher. The site re-renders the same page in the target language,
-     * so the returned steps are bound to {@code target} and verify that the user stayed on this page.
-     */
     public ExchangeRatesSteps switchLanguageTo(AppLocale target) {
         ratesPage.header().languageSwitcher().toggle();
         return new ExchangeRatesSteps(page, target).verifyPageOpened();
@@ -79,23 +73,17 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    // ---------- Rate history (SCRUM-T29) ----------
-
     public ExchangeRatesSteps openHistory(String currencyCode) {
         ratesPage.openHistory(currencyCode);
         RateHistoryDialogComponent dialog = ratesPage.historyDialog();
         assertThat(dialog.root()).isVisible();
         assertThat(dialog.currencyBadge()).hasText(currencyCode);
         assertThat(dialog.title()).hasText(LocalizedText.get(locale, "rates.history.title"));
-        // Rows are rendered empty first and filled when the history request returns
         assertThat(dialog.firstDateCell()).hasText(Pattern.compile("\\d"));
         assertThat(dialog.unfilledRows()).hasCount(0);
         return this;
     }
 
-    /**
-     * Also proves the dates are localized: they are parsed with this locale's month names.
-     */
     public ExchangeRatesSteps verifyHistoryIsValid(String currencyCode) {
         List<Map<String, String>> entries = ratesPage.historyDialog().entries();
         assertTrue(entries.size() >= MIN_HISTORY_ENTRIES,
@@ -126,8 +114,6 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    // ---------- Currency converter (SCRUM-T31) ----------
-
     public ExchangeRatesSteps verifyConverterDefaults(String from, String to) {
         CurrencyConverterComponent converter = ratesPage.converter();
         assertThat(converter.root()).isVisible();
@@ -144,8 +130,6 @@ public class ExchangeRatesSteps {
         sellRate = NumberUtils.parse(ratesPage.sellRate(currencyCode).innerText());
         return this;
     }
-
-    // ---------- Data-driven conversion (SCRUM-T33) ----------
 
     public ExchangeRatesSteps verifyConverterVisible() {
         assertThat(ratesPage.converter().root()).isVisible();
@@ -168,7 +152,6 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    /** Converts {@code amount} of the foreign currency to GEL; the bank buys it at its buy rate. */
     public ExchangeRatesSteps convertAndVerify(String currencyCode, String amount) {
         CurrencyConverterComponent converter = ratesPage.converter();
         converter.enterAmount(amount);
@@ -180,7 +163,6 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    /** After swapping, GEL is sold for the foreign currency at the bank's sell rate. */
     public ExchangeRatesSteps swapAndVerify(String currencyCode, String amount) {
         CurrencyConverterComponent converter = ratesPage.converter();
         converter.swap();
@@ -194,7 +176,6 @@ public class ExchangeRatesSteps {
         return this;
     }
 
-    /** Allows for 2-decimal rounding and the site's rounded inverse rate (e.g. 1 GEL = 0.3781 USD). */
     private static double tolerance(double expected) {
         return Math.max(0.01, expected * 0.0005);
     }

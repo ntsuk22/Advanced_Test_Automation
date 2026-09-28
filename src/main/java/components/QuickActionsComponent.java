@@ -6,10 +6,6 @@ import constants.PagePaths;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-/**
- * Sticky quick-action menu (exchange rates, locations, chat) in the bottom-right corner of every page.
- * The buttons are stacked under the kebab toggle until the menu is expanded.
- */
 public class QuickActionsComponent extends BaseComponent {
 
     public QuickActionsComponent(Page page) {

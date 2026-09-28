@@ -11,10 +11,6 @@ public class CurrencyConverterDataDrivenTest extends BaseTest {
 
     private static final AppLocale LOCALE = AppLocale.KA;
 
-    /**
-     * Runs once per active row of the currency_conversion table (resources/testdata/sql/data.sql).
-     * A new variation is a new row - this method does not change.
-     */
     @Test(description = "SCRUM-T33 | Currency converter - convert currencies and amounts from the database",
             dataProvider = CurrencyConversionDataProvider.ACTIVE_CONVERSIONS,
             dataProviderClass = CurrencyConversionDataProvider.class)

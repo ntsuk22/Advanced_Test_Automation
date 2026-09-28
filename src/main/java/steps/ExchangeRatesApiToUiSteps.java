@@ -16,10 +16,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-/**
- * Compares the exchange-rates table with the commercialList API response.
- * The API is the source of truth: every expected value comes from {@link CommercialRatesResponse}.
- */
 public class ExchangeRatesApiToUiSteps {
 
     private final AppLocale locale;
@@ -44,7 +40,6 @@ public class ExchangeRatesApiToUiSteps {
 
     public ExchangeRatesApiToUiSteps showAllCurrencies() {
         ratesPage.showAllCurrenciesButton(LocalizedText.get(locale, "rates.show.all")).click();
-        // Waits until the table renders exactly as many currencies as the API returned
         assertThat(ratesPage.rateRows()).hasCount(api.getRates().size());
         return this;
     }
@@ -56,10 +51,6 @@ public class ExchangeRatesApiToUiSteps {
         return this;
     }
 
-    /**
-     * UI row label is "{iso} {weight} {name}" (e.g. "CNY 10 ჩინური იუანი"); rates are compared numerically
-     * because the UI drops trailing zeros (API 2.5530 is shown as 2.553).
-     */
     private void verifyRowMatches(CurrencyRate expected, List<Map<String, String>> uiRows) {
         String iso = expected.getIso();
         Map<String, String> row = findRow(uiRows, iso)
@@ -76,7 +67,6 @@ public class ExchangeRatesApiToUiSteps {
         return uiRows.stream().filter(row -> row.get("currencyName").startsWith(iso + " ")).findFirst();
     }
 
-    /** The official-rate cell also contains the trend icon name, the value is the last token. */
     private static String lastToken(String text) {
         String[] parts = text.split(" ");
         return parts[parts.length - 1];

@@ -3,9 +3,6 @@ package components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
-/**
- * Site header rendered on every page.
- */
 public class HeaderComponent extends BaseComponent {
 
     private final LanguageSwitcherComponent languageSwitcher;
@@ -19,7 +16,6 @@ public class HeaderComponent extends BaseComponent {
         return root.locator("button.tbcx-pw-search__button");
     }
 
-    /** Top-level navigation entries ("ჩემთვის" / "Personal", ...). */
     public Locator navigationItems() {
         return root.locator(".tbcx-pw-navigation-item__link");
     }

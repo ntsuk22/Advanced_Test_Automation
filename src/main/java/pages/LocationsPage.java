@@ -10,9 +10,6 @@ import utils.RegexUtils;
 
 import java.util.regex.Pattern;
 
-/**
- * ATMs &amp; Branches page: Google map, location search, type tabs and the location list.
- */
 public class LocationsPage extends BasePage {
 
     private static final String LIST_ITEM = ".tbcx-pw-atm-branches-section__list-item";
@@ -22,7 +19,7 @@ public class LocationsPage extends BasePage {
 
     public LocationsPage(Page page, AppLocale locale) {
         super(page, locale);
-        this.typeTabs = new TabMenuComponent(page, page.locator("tbcx-pw-tab-menu").first());
+        this.typeTabs = TabMenuComponent.firstOn(page);
     }
 
     @Override
@@ -54,7 +51,6 @@ public class LocationsPage extends BasePage {
         return items().filter(new Locator.FilterOptions().setHasNot(iconLocator(icon)));
     }
 
-    /** Locations whose address (title) does not contain {@code text}, case-insensitive. */
     public Locator itemsWithTitleNotContaining(String text) {
         Locator matchingTitle = page.locator(".tbcx-pw-atm-branches-section__list-item-title")
                 .filter(new Locator.FilterOptions().setHasText(Pattern.compile(RegexUtils.escape(text), Pattern.CASE_INSENSITIVE)));
@@ -70,14 +66,10 @@ public class LocationsPage extends BasePage {
         searchInput().fill(text);
     }
 
-    /** True for the POST request that (re)loads the location list. */
     public static boolean isLocationListResponse(Response response) {
         return response.url().contains(LOCATIONS_API) && "POST".equals(response.request().method());
     }
 
-    /**
-     * Presses Enter in the search field and returns once the list request carrying the keyword has completed.
-     */
     public Response submitSearch(String keyword) {
         return page.waitForResponse(
                 r -> isLocationListResponse(r) && r.request().postData() != null
@@ -85,9 +77,6 @@ public class LocationsPage extends BasePage {
                 () -> searchInput().press("Enter"));
     }
 
-    /**
-     * Clicks a type tab and returns once the list request for that tab has completed.
-     */
     public Response selectType(String tabLabel) {
         return page.waitForResponse(LocationsPage::isLocationListResponse, () -> typeTabs.select(tabLabel));
     }

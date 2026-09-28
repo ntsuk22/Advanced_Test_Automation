@@ -4,14 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 
-/**
- * One element of the POST /commercialRates/list response the rate-history dialog is built from, e.g.
- * {"startDate": "2026-09-28T22:56:00.09", "ccyFrom": "EUR", "ccyTo": "GEL", "multiplier": 1, "buy": 2.889, "sell": 3.034}.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RateHistoryEntry {
 
-    /** Local date-time (no offset) from which this rate was valid. */
     private String startDate;
     private String ccyFrom;
     private String ccyTo;

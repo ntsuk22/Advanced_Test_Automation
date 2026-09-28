@@ -1,8 +1,5 @@
 package constants;
 
-/**
- * Locale-independent page paths; the locale prefix (/ka, /en) is added by the pages.
- */
 public final class PagePaths {
 
     public static final String HOME = "";

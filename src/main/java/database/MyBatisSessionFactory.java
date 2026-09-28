@@ -10,10 +10,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
-/**
- * Builds the MyBatis SqlSessionFactory once from mybatis/mybatis-config.xml,
- * with the connection settings taken from config.properties (overridable with -Ddb.url=...).
- */
 public final class MyBatisSessionFactory {
 
     private static final SqlSessionFactory FACTORY = build();

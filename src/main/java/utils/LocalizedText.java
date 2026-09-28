@@ -10,9 +10,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
 
-/**
- * Locale-specific UI texts, stored in resources/testdata/locales/{ka|en}.properties.
- */
 public final class LocalizedText {
 
     private static final Map<AppLocale, Properties> CACHE = new EnumMap<>(AppLocale.class);

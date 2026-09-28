@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * "კურსის ისტორია" dialog opened by clicking a currency row on the exchange-rates page.
- */
 public class RateHistoryDialogComponent extends BaseComponent {
 
     public RateHistoryDialogComponent(Page page) {
@@ -33,7 +30,6 @@ public class RateHistoryDialogComponent extends BaseComponent {
         return rows().first().locator("[col-id='date']");
     }
 
-    /** Rows whose cells are not filled yet (the grid renders placeholders before the data arrives). */
     public Locator unfilledRows() {
         Locator filledCell = page.locator("[col-id='sellRate']")
                 .filter(new Locator.FilterOptions().setHasText(Pattern.compile("\\d")));
@@ -44,9 +40,6 @@ public class RateHistoryDialogComponent extends BaseComponent {
         root.locator(".tbcx-pw-dialog__header-close button").click();
     }
 
-    /**
-     * Reads every history row as {date, buyRate, sellRate}. Call only after the rows are loaded.
-     */
     @SuppressWarnings("unchecked")
     public List<Map<String, String>> entries() {
         return (List<Map<String, String>>) rows().evaluateAll(

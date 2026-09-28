@@ -8,15 +8,11 @@ import utils.ConfigReader;
 
 import static io.restassured.RestAssured.given;
 
-/**
- * Shared request setup for the public tbcbank.ge API gateway (no authentication).
- */
 public abstract class BaseApiClient {
 
     private final RequestSpecification spec = new RequestSpecBuilder()
             .setBaseUri(ConfigReader.get("api.base.url"))
             .setAccept(ContentType.JSON)
-            // Same origin the website calls the gateway from
             .addHeader("Origin", ConfigReader.get("base.url"))
             .log(LogDetail.URI)
             .build();

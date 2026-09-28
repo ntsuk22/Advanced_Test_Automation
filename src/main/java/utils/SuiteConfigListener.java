@@ -5,10 +5,6 @@ import org.testng.xml.XmlSuite;
 
 import java.util.List;
 
-/**
- * Applies the configurable thread count (config.properties / -Dthreads) to every suite before it starts,
- * so parallelism can be tuned without editing testng.xml.
- */
 public class SuiteConfigListener implements IAlterSuiteListener {
 
     @Override
