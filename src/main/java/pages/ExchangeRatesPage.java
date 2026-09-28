@@ -2,12 +2,15 @@ package pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import components.CurrencyConverterComponent;
 import components.RateHistoryDialogComponent;
 import components.TabMenuComponent;
 import constants.AppLocale;
 import constants.PagePaths;
 
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -76,5 +79,25 @@ public class ExchangeRatesPage extends BasePage {
 
     public void openHistory(String currencyCode) {
         rateRow(currencyCode).click();
+    }
+
+    public Locator rateRows() {
+        return ratesTable().locator(".ag-row");
+    }
+
+    /** The table initially lists the most popular currencies; this button reveals the rest. */
+    public Locator showAllCurrenciesButton(String label) {
+        return page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(label));
+    }
+
+    /**
+     * Reads every rendered row as {currencyName, buyRate, sellRate, officialRate} with whitespace normalised,
+     * e.g. currencyName "CNY 10 ჩინური იუანი", officialRate "chevron-up-outlined 3.8848" (trend icon + value).
+     */
+    @SuppressWarnings("unchecked")
+    public List<Map<String, String>> readRateRows() {
+        return (List<Map<String, String>>) rateRows().evaluateAll(
+                "rows => rows.map(r => Object.fromEntries([...r.querySelectorAll('[col-id]')]"
+                        + ".map(c => [c.getAttribute('col-id'), c.innerText.replace(/\\s+/g, ' ').trim()])))");
     }
 }

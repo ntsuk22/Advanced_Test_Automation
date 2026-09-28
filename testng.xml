@@ -30,4 +30,16 @@
             <class name="tests.ExchangeRatesApiTest"/>
         </classes>
     </test>
+
+    <test name="API to UI">
+        <classes>
+            <class name="tests.ApiToUiConsistencyTest"/>
+        </classes>
+    </test>
+
+    <test name="Network validation">
+        <classes>
+            <class name="tests.NetworkValidationTest"/>
+        </classes>
+    </test>
 </suite>

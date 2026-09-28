@@ -156,6 +156,12 @@ public class ExchangeRatesApiSteps {
         return this;
     }
 
+    /** Response of the last {@link #requestCommercialRates} call, used as the source of truth by UI checks. */
+    public CommercialRatesResponse commercialRates() {
+        assertNotNull(rates, "Commercial rates were not requested yet");
+        return rates;
+    }
+
     // ---------- helpers ----------
 
     private static CurrencyRate rate(CommercialRatesResponse response, String iso) {
