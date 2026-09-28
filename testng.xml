@@ -18,4 +18,10 @@
             <class name="tests.LocalizationTest"/>
         </classes>
     </test>
+
+    <test name="SQL data-driven">
+        <classes>
+            <class name="tests.CurrencyConverterDataDrivenTest"/>
+        </classes>
+    </test>
 </suite>

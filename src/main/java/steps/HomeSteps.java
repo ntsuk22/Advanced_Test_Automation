@@ -21,6 +21,7 @@ public class HomeSteps {
 
     public HomeSteps openHomePage() {
         homePage.open();
+        homePage.failIfBlockedBySite();
         assertThat(homePage.page()).hasURL(Pattern.compile(RegexUtils.escape(homePage.url()) + "/?$"));
         assertThat(homePage.header().root()).isVisible();
         return this;

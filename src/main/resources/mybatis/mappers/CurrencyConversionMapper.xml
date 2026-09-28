@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="database.mappers.CurrencyConversionMapper">
+
+    <resultMap id="currencyConversion" type="database.models.CurrencyConversion">
+        <id property="id" column="id"/>
+        <result property="currencyCode" column="currency_code"/>
+        <result property="currencyName" column="currency_name"/>
+        <result property="amount" column="amount"/>
+        <result property="active" column="active"/>
+    </resultMap>
+
+    <select id="findActive" resultMap="currencyConversion">
+        SELECT id, currency_code, currency_name, amount, active
+        FROM currency_conversion
+        WHERE active = TRUE
+        ORDER BY id
+    </select>
+</mapper>

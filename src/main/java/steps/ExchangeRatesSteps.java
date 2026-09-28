@@ -145,6 +145,29 @@ public class ExchangeRatesSteps {
         return this;
     }
 
+    // ---------- Data-driven conversion (SCRUM-T33) ----------
+
+    public ExchangeRatesSteps verifyConverterVisible() {
+        assertThat(ratesPage.converter().root()).isVisible();
+        assertThat(ratesPage.converter().fromAmount()).isEditable();
+        return this;
+    }
+
+    public ExchangeRatesSteps verifyCurrencyName(String currencyCode, String expectedName) {
+        assertThat(ratesPage.currencyName(currencyCode)).containsText(expectedName);
+        return this;
+    }
+
+    public ExchangeRatesSteps selectConverterCurrency(String currencyCode) {
+        CurrencyConverterComponent converter = ratesPage.converter();
+        converter.selectFromCurrency(currencyCode);
+        assertThat(converter.fromCurrency()).hasText(currencyCode);
+        assertThat(converter.toCurrency()).hasText("GEL");
+        assertThat(page).hasURL(Pattern.compile(".*/" + currencyCode + "-to-GEL.*"));
+        assertThat(converter.rateDescription()).hasText("1 " + currencyCode + " = " + buyRateText + " GEL");
+        return this;
+    }
+
     /** Converts {@code amount} of the foreign currency to GEL; the bank buys it at its buy rate. */
     public ExchangeRatesSteps convertAndVerify(String currencyCode, String amount) {
         CurrencyConverterComponent converter = ratesPage.converter();

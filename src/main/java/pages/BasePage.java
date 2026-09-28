@@ -13,6 +13,8 @@ import utils.ConfigReader;
  */
 public abstract class BasePage {
 
+    private static final String BLOCKED_PAGE_TEXT = "Your request has been blocked";
+
     protected final Page page;
     protected final AppLocale locale;
 
@@ -43,6 +45,17 @@ public abstract class BasePage {
 
     public void open() {
         page.navigate(url());
+    }
+
+    /**
+     * tbcbank.ge's firewall answers too many rapid requests with a plain "Your request has been blocked" page.
+     * Fail with that reason instead of a misleading "element not found" further on.
+     */
+    public void failIfBlockedBySite() {
+        if (page.getByText(BLOCKED_PAGE_TEXT).count() > 0) {
+            throw new IllegalStateException("tbcbank.ge blocked the request (WAF '" + BLOCKED_PAGE_TEXT
+                    + "', error code 101). This is rate limiting, not a test failure - wait a few minutes and re-run.");
+        }
     }
 
     public HeaderComponent header() {

@@ -15,6 +15,8 @@
         <playwright.version>1.63.0</playwright.version>
         <testng.version>7.12.0</testng.version>
         <slf4j.version>2.0.17</slf4j.version>
+        <mybatis.version>3.5.19</mybatis.version>
+        <h2.version>2.5.252</h2.version>
 
         <!-- Default suite; override with -Dsuite=... -->
         <suite>testng.xml</suite>
@@ -30,6 +32,16 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

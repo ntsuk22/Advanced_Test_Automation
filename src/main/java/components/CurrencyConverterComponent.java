@@ -3,6 +3,8 @@ package components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import java.util.regex.Pattern;
+
 /**
  * Currency converter on the exchange-rates page: amount + currency on each side, a swap button
  * and the "1 USD = 2.555 GEL" description.
@@ -33,6 +35,15 @@ public class CurrencyConverterComponent extends BaseComponent {
 
     public Locator rateDescription() {
         return root.locator(".exchange-rates-calculator__description");
+    }
+
+    /** Opens the source-currency dropdown and picks {@code currencyCode}; the option list renders in an overlay. */
+    public void selectFromCurrency(String currencyCode) {
+        root.locator(".currency-dropdown__trigger").nth(0).click();
+        page.locator(".currency-dropdown__panel .currency-dropdown__item")
+                .filter(new Locator.FilterOptions().setHas(page.locator(".currency-dropdown__item-label")
+                        .filter(new Locator.FilterOptions().setHasText(Pattern.compile("^\\s*" + currencyCode + "\\s*$")))))
+                .click();
     }
 
     public void enterAmount(String amount) {
