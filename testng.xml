@@ -24,4 +24,10 @@
             <class name="tests.CurrencyConverterDataDrivenTest"/>
         </classes>
     </test>
+
+    <test name="API">
+        <classes>
+            <class name="tests.ExchangeRatesApiTest"/>
+        </classes>
+    </test>
 </suite>
