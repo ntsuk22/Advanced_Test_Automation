@@ -17,10 +17,6 @@ public class SearchOverlayComponent extends BaseComponent {
         return root.locator(".search-result-item");
     }
 
-    public Locator resultTitles() {
-        return root.locator(".search-result-item__title");
-    }
-
     public Locator result(String title, String targetPath) {
         return results()
                 .filter(new Locator.FilterOptions().setHas(page.locator("a[href='" + targetPath + "']")))

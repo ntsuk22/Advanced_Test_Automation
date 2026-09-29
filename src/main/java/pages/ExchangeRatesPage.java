@@ -50,7 +50,7 @@ public class ExchangeRatesPage extends BasePage {
     public Locator rateRow(String currencyCode) {
         Locator currencyCell = page.locator("[col-id='currencyName']")
                 .filter(new Locator.FilterOptions().setHasText(Pattern.compile("^\\s*" + currencyCode + "\\b")));
-        return ratesTable().locator(".ag-row").filter(new Locator.FilterOptions().setHas(currencyCell));
+        return rateRows().filter(new Locator.FilterOptions().setHas(currencyCell));
     }
 
     public Locator buyRate(String currencyCode) {

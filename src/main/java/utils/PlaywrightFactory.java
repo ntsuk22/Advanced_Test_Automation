@@ -52,6 +52,10 @@ public final class PlaywrightFactory {
         };
     }
 
+    public static boolean isStarted() {
+        return PAGE.get() != null;
+    }
+
     public static Page getPage() {
         Page page = PAGE.get();
         if (page == null) {

@@ -29,6 +29,9 @@ public class ExchangeRatesApiToUiSteps {
     }
 
     public ExchangeRatesApiToUiSteps verifyRowsMatchApi(String... isos) {
+        for (String iso : isos) {
+            assertThat(ratesPage.rateRow(iso)).isVisible();
+        }
         List<Map<String, String>> uiRows = ratesPage.readRateRows();
         for (String iso : isos) {
             CurrencyRate expected = api.rate(iso)

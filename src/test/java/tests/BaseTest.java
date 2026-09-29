@@ -18,7 +18,7 @@ public abstract class BaseTest {
     @AfterMethod(alwaysRun = true)
     public void stopBrowser(ITestResult result) {
         try {
-            if (result.getStatus() == ITestResult.FAILURE) {
+            if (result.getStatus() == ITestResult.FAILURE && PlaywrightFactory.isStarted()) {
                 page().screenshot(new Page.ScreenshotOptions()
                         .setPath(Paths.get("target", "screenshots", result.getMethod().getMethodName() + ".png"))
                         .setFullPage(true));
